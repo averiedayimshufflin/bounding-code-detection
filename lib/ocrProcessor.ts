@@ -39,10 +39,11 @@ let workerPromise: Promise<TesseractWorker> | null = null;
 
 function normalizeOCRText(value: string): string {
   let text = value
-    .toUpperCase()
-    .trim()
-    .replace(/[–—−]/g, '-')
-    .replace(/\s+/g, '');
+  .toUpperCase()
+  .trim()
+  .replace(/[–—−]/g, '-')
+  .replace(/\s+/g, '')
+  .replace(/[^A-Z0-9-]/g, '');
 
   // Common lighting-plan OCR fixes.
   // LFI  -> LF1

@@ -206,11 +206,12 @@ export default function MainApp() {
   if (status === 'loading-pdf' || status === 'processing') {
     return (
       <ProgressIndicator
-        status={status}
-        pdfName={pdfName}
-        currentPage={currentProcessingPage}
-        totalPages={totalPages}
-      />
+  status={status}
+  pdfName={pdfName}
+  currentPage={currentProcessingPage}
+  totalPages={totalPages}
+  ocrEngine={config.ocrEngine}
+/>
     );
   }
 

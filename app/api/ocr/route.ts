@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-
+console.log('[OCR] /api/ocr called');
+console.log('[OCR] Has OCR_SPACE_API_KEY:', Boolean(process.env.OCR_SPACE_API_KEY));
 /**
  * POST /api/ocr
  *
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
   formData.append('OCREngine', '2'); // Engine 2 handles small/printed text better
 
   let ocrData: any;
-
+console.log('[OCR] Sending request to OCR.space');
   try {
     const ocrResponse = await fetch('https://api.ocr.space/parse/image', {
       method: 'POST',

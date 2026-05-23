@@ -362,8 +362,8 @@ function parseOCRSpaceWords(payload: any, pageNumber: number): OCRWord[] {
 }
 async function shrinkImageDataUrl(
   imageDataUrl: string,
-  maxWidth = 2600,
-  quality = 0.92,
+maxWidth = 3000,
+quality = 0.95,
 ): Promise<{ dataUrl: string; scale: number }> {
   const image = new Image();
   image.src = imageDataUrl;
@@ -418,19 +418,14 @@ export async function runOCRSpaceAPI(
     );
   }
 
-  let words = parseOCRSpaceWords(payload, pageNumber);
+  const words = parseOCRSpaceWords(payload, pageNumber);
 
-  if (resized.scale !== 1) {
-    words = words.map((word) => ({
-      ...word,
-      bbox: {
-        x0: word.bbox.x0 / resized.scale,
-        y0: word.bbox.y0 / resized.scale,
-        x1: word.bbox.x1 / resized.scale,
-        y1: word.bbox.y1 / resized.scale,
-      },
-    }));
-  }
+console.log('[OCR.space client] targetCodes:', targetCodes);
+console.log('[OCR.space client] words count:', words.length);
+console.log(
+  '[OCR.space client] first words:',
+  words.slice(0, 30).map((word) => word.text),
+);
 
-  return buildOCRResult(words, pageNumber, targetCodes);
+return buildOCRResult(words, pageNumber, targetCodes);
 }

@@ -8,7 +8,7 @@ interface Props {
   totalPages: number;
   pdfName: string;
   status: 'loading-pdf' | 'processing';
-  ocrEngine: OCREngine;
+ocrEngine?: OCREngine;
 }
 
 export default function ProgressIndicator({

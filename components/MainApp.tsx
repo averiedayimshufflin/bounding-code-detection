@@ -21,7 +21,7 @@ import { AlertCircle, Settings, X } from 'lucide-react';
 
 const DEFAULT_CONFIG: ProcessingConfig = {
   ocrEngine: 'ocrspace',
-  renderScale: 3,
+  renderScale: 2,
   debugMode: false,
 };
 

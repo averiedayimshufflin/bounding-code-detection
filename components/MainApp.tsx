@@ -112,11 +112,6 @@ const ocrResult = await runTesseractOCR(
           setPages([...processedPages]);
         }
 
-        // Clean up Tesseract worker after processing.
-        if (config.ocrEngine === 'tesseract') {
-          await terminateTesseract();
-        }
-
         setStatus('complete');
         setViewerPage(1);
       } catch (err) {

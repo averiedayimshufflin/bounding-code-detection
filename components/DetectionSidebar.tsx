@@ -136,26 +136,14 @@ export default function DetectionSidebar({
       </div>
 
       {/* Footer controls */}
-      <div className="px-4 py-3 border-t border-slate-200 shrink-0 flex items-center gap-2 bg-white">
-        <button
-          onClick={onDebugToggle}
-          className={`
-            flex-1 py-2 rounded-lg text-xs font-medium transition-colors border
-            ${debugMode
-              ? 'bg-yellow-50 border-yellow-300 text-yellow-700'
-              : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700'}
-          `}
-        >
-          {debugMode ? '🔍 Debug ON' : '🔍 Debug'}
-        </button>
-
-        <button
-          onClick={onReset}
-          className="flex-1 py-2 rounded-lg text-xs font-medium border border-slate-200 bg-slate-50 text-slate-600 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700 transition-colors"
-        >
-          ↩ New PDF
-        </button>
-      </div>
+<div className="px-4 py-3 border-t border-slate-200 shrink-0 bg-white">
+  <button
+    onClick={onReset}
+    className="w-full py-2 rounded-lg text-xs font-medium border border-slate-200 bg-slate-50 text-slate-600 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700 transition-colors"
+  >
+    ↩ New PDF
+  </button>
+</div>
     </aside>
   );
 }
@@ -177,9 +165,6 @@ function ByPageTab({
     return (
       <div className="flex flex-col items-center justify-center h-48 px-4 text-center">
         <p className="text-slate-500 text-sm">No target codes detected</p>
-        <p className="text-slate-400 text-xs mt-1">
-          Try enabling debug mode to see raw OCR words.
-        </p>
       </div>
     );
   }

@@ -14,7 +14,7 @@ interface Props {
   debugMode: boolean;
   onDebugToggle: () => void;
   pdfName: string;
-  targetCodes: string[];
+  targetCodes?: string[];
   onReset: () => void;
 }
 
@@ -29,18 +29,16 @@ export default function DetectionSidebar({
   debugMode,
   onDebugToggle,
   pdfName,
-  targetCodes,
+  targetCodes = [],
   onReset,
 }: Props) {
   const [tab, setTab] = useState<Tab>('by-page');
 
-  // All detections across all pages
   const allDetections = useMemo(
     () => pages.flatMap((p) => p.detections),
     [pages],
   );
 
-  // Summary: code → { total, pages }
   const summary = useMemo(() => {
     const map = new Map<string, { total: number; pages: Map<number, number> }>();
     for (const det of allDetections) {
@@ -56,17 +54,17 @@ export default function DetectionSidebar({
   const pagesWithDetections = pages.filter((p) => p.detections.length > 0).length;
 
   return (
-    <aside className="flex flex-col h-full bg-gray-950 border-r border-gray-800">
+    <aside className="flex flex-col h-full bg-white border-r border-slate-200">
       {/* Branding header */}
-      <div className="px-4 pt-4 pb-3 border-b border-gray-800 shrink-0">
+      <div className="px-4 pt-4 pb-3 border-b border-slate-200 shrink-0 bg-white">
         <div className="flex items-center gap-2 mb-1">
-          <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-          <span className="text-xs text-red-400 font-mono tracking-widest uppercase">
+          <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+          <span className="text-xs text-orange-700 font-mono tracking-widest uppercase">
             Code Scanner
           </span>
         </div>
         <p
-          className="text-xs text-gray-500 truncate"
+          className="text-xs text-slate-500 truncate"
           title={pdfName}
         >
           {pdfName}
@@ -81,12 +79,12 @@ export default function DetectionSidebar({
           ].map(({ label, value }) => (
             <div
               key={label}
-              className="flex flex-col items-center rounded-lg bg-gray-900 py-2 px-1"
+              className="flex flex-col items-center rounded-lg bg-orange-50 border border-orange-100 py-2 px-1"
             >
-              <span className="text-lg font-bold text-white tabular-nums leading-tight">
+              <span className="text-lg font-bold text-slate-950 tabular-nums leading-tight">
                 {value}
               </span>
-              <span className="text-[10px] text-gray-600 mt-0.5 text-center leading-tight">
+              <span className="text-[10px] text-slate-500 mt-0.5 text-center leading-tight">
                 {label}
               </span>
             </div>
@@ -95,7 +93,7 @@ export default function DetectionSidebar({
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-gray-800 shrink-0">
+      <div className="flex border-b border-slate-200 shrink-0 bg-white">
         {(
           [
             { id: 'by-page', label: 'By page', Icon: List },
@@ -108,8 +106,8 @@ export default function DetectionSidebar({
             className={`
               flex-1 flex items-center justify-center gap-1.5 py-2.5 text-xs font-medium transition-colors border-b-2 -mb-px
               ${tab === id
-                ? 'border-red-500 text-red-400'
-                : 'border-transparent text-gray-500 hover:text-gray-300'}
+                ? 'border-orange-500 text-orange-700 bg-orange-50'
+                : 'border-transparent text-slate-500 hover:text-slate-900 hover:bg-slate-50'}
             `}
           >
             <Icon size={13} />
@@ -119,7 +117,7 @@ export default function DetectionSidebar({
       </div>
 
       {/* Scrollable content */}
-      <div className="flex-1 overflow-y-auto custom-scroll">
+      <div className="flex-1 overflow-y-auto custom-scroll bg-white">
         {tab === 'by-page' ? (
           <ByPageTab
             pages={pages}
@@ -138,14 +136,14 @@ export default function DetectionSidebar({
       </div>
 
       {/* Footer controls */}
-      <div className="px-4 py-3 border-t border-gray-800 shrink-0 flex items-center gap-2">
+      <div className="px-4 py-3 border-t border-slate-200 shrink-0 flex items-center gap-2 bg-white">
         <button
           onClick={onDebugToggle}
           className={`
             flex-1 py-2 rounded-lg text-xs font-medium transition-colors border
             ${debugMode
-              ? 'bg-yellow-500/15 border-yellow-500/30 text-yellow-400'
-              : 'bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-600 hover:text-gray-300'}
+              ? 'bg-yellow-50 border-yellow-300 text-yellow-700'
+              : 'bg-slate-50 border-slate-200 text-slate-600 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700'}
           `}
         >
           {debugMode ? '🔍 Debug ON' : '🔍 Debug'}
@@ -153,7 +151,7 @@ export default function DetectionSidebar({
 
         <button
           onClick={onReset}
-          className="flex-1 py-2 rounded-lg text-xs font-medium border border-gray-700 bg-gray-900 text-gray-400 hover:border-gray-600 hover:text-gray-300 transition-colors"
+          className="flex-1 py-2 rounded-lg text-xs font-medium border border-slate-200 bg-slate-50 text-slate-600 hover:border-orange-200 hover:bg-orange-50 hover:text-orange-700 transition-colors"
         >
           ↩ New PDF
         </button>
@@ -161,8 +159,6 @@ export default function DetectionSidebar({
     </aside>
   );
 }
-
-// ---------- By-page tab ----------
 
 function ByPageTab({
   pages,
@@ -180,8 +176,8 @@ function ByPageTab({
   if (pages.every((p) => p.detections.length === 0)) {
     return (
       <div className="flex flex-col items-center justify-center h-48 px-4 text-center">
-        <p className="text-gray-600 text-sm">No target codes detected</p>
-        <p className="text-gray-700 text-xs mt-1">
+        <p className="text-slate-500 text-sm">No target codes detected</p>
+        <p className="text-slate-400 text-xs mt-1">
           Try enabling debug mode to see raw OCR words.
         </p>
       </div>
@@ -197,32 +193,32 @@ function ByPageTab({
             onClick={() => onPageChange(page.pageNumber)}
             className={`
               w-full flex items-center justify-between px-4 py-2 text-left transition-colors
-              ${page.pageNumber === currentPage ? 'bg-gray-900' : 'hover:bg-gray-900/50'}
+              ${page.pageNumber === currentPage ? 'bg-orange-50' : 'hover:bg-slate-50'}
             `}
           >
             <div className="flex items-center gap-2">
               <ChevronRight
                 size={13}
-                className={`transition-transform text-gray-500 ${
-                  page.pageNumber === currentPage ? 'rotate-90' : ''
+                className={`transition-transform text-slate-400 ${
+                  page.pageNumber === currentPage ? 'rotate-90 text-orange-500' : ''
                 }`}
               />
-              <span className="text-xs text-gray-400 font-mono">
+              <span className="text-xs text-slate-700 font-mono">
                 Page {page.pageNumber}
               </span>
             </div>
             <span
               className={`text-xs font-mono px-1.5 py-0.5 rounded-full ${
                 page.detections.length > 0
-                  ? 'bg-red-500/20 text-red-400'
-                  : 'text-gray-700'
+                  ? 'bg-orange-100 text-orange-700'
+                  : 'text-slate-400'
               }`}
             >
               {page.detections.length}
             </span>
           </button>
 
-          {/* Detection rows (shown when page is current) */}
+          {/* Detection rows */}
           {page.pageNumber === currentPage && page.detections.length > 0 && (
             <div className="pb-1">
               {page.detections.map((det) => (
@@ -237,7 +233,7 @@ function ByPageTab({
           )}
 
           {page.pageNumber === currentPage && page.detections.length === 0 && (
-            <p className="px-8 py-2 text-xs text-gray-700 italic">
+            <p className="px-8 py-2 text-xs text-slate-400 italic">
               No codes on this page
             </p>
           )}
@@ -262,17 +258,18 @@ function DetectionRow({
   return (
     <button
       onClick={onClick}
-      className={`detection-row w-full text-left px-4 py-2.5 flex items-start gap-3 ${
-        isSelected ? 'active' : ''
-      }`}
+      className={`
+        detection-row w-full text-left px-4 py-2.5 flex items-start gap-3 transition-colors
+        ${isSelected ? 'active bg-orange-50 border-l-2 border-orange-500' : 'hover:bg-slate-50 border-l-2 border-transparent'}
+      `}
     >
       {/* Code chip */}
       <span
         className="shrink-0 mt-0.5 px-1.5 py-0.5 rounded text-[11px] font-mono font-bold"
         style={{
-          backgroundColor: `${colour}25`,
+          backgroundColor: `${colour}18`,
           color: colour,
-          border: `1px solid ${colour}40`,
+          border: `1px solid ${colour}35`,
         }}
       >
         {detection.code}
@@ -280,13 +277,13 @@ function DetectionRow({
 
       {/* Coords */}
       <div className="flex-1 min-w-0">
-        <p className="text-[10px] text-gray-500 font-mono leading-relaxed">
+        <p className="text-[10px] text-slate-500 font-mono leading-relaxed">
           ({x0}, {y0}) → ({x1}, {y1})
         </p>
-        <p className="text-[10px] text-gray-700 font-mono mt-0.5">
+        <p className="text-[10px] text-slate-400 font-mono mt-0.5">
           conf {detection.confidence.toFixed(0)}%
           {detection.rawText !== detection.code && (
-            <span className="ml-1 text-yellow-700">
+            <span className="ml-1 text-yellow-600">
               raw: &quot;{detection.rawText}&quot;
             </span>
           )}
@@ -295,8 +292,6 @@ function DetectionRow({
     </button>
   );
 }
-
-// ---------- Summary tab ----------
 
 function SummaryTab({
   summary,
@@ -310,7 +305,7 @@ function SummaryTab({
   if (summary.size === 0) {
     return (
       <div className="flex items-center justify-center h-48 px-4 text-center">
-        <p className="text-gray-600 text-sm">No detections yet</p>
+        <p className="text-slate-500 text-sm">No detections yet</p>
       </div>
     );
   }
@@ -339,19 +334,19 @@ function SummaryTab({
                 className="text-xs font-mono font-bold px-1.5 py-0.5 rounded"
                 style={{
                   color: colour,
-                  backgroundColor: `${colour}20`,
+                  backgroundColor: `${colour}15`,
                   border: `1px solid ${colour}30`,
                 }}
               >
                 {code}
               </span>
-              <span className="text-xs text-gray-400 font-mono tabular-nums">
+              <span className="text-xs text-slate-500 font-mono tabular-nums">
                 {total}×
               </span>
             </div>
 
             {/* Bar */}
-            <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
+            <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
               <div
                 className="h-full rounded-full transition-all"
                 style={{
@@ -369,7 +364,7 @@ function SummaryTab({
                   <button
                     key={pg}
                     onClick={() => onPageChange(pg)}
-                    className="text-[10px] font-mono text-gray-500 hover:text-gray-300 transition-colors"
+                    className="text-[10px] font-mono text-slate-500 hover:text-orange-700 transition-colors"
                   >
                     p.{pg}
                     {cnt > 1 ? `(×${cnt})` : ''}

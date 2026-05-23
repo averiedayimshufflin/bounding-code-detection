@@ -154,8 +154,8 @@ className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-800 disabled:opaci
       
 
   {/* Main page image with SVG bounding-box overlay */}
-<div className="flex-1 overflow-auto bg-gray-900/40 p-6 flex justify-center items-start">  <div
-className="relative page-enter shadow-2xl rounded-lg overflow-hidden shrink-0"    style={{
+<div className="flex-1 overflow-auto bg-gray-900/40 p-6 flex justify-center items-start">  
+<div className="relative page-enter shadow-2xl rounded-lg overflow-hidden shrink-0"    style={{
       width: page.width * zoom,
       height: page.height * zoom,
       minWidth: page.width * zoom,

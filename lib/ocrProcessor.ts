@@ -195,9 +195,12 @@ function buildOCRResult(
   for (let i = 0; i < allWords.length; i++) {
     for (let span = 2; span <= 3; span++) {
       const group = allWords.slice(i, i + span);
-      if (group.length !== span) continue;
+if (group.length !== span) continue;
 
-      const joinedNoSpace = group.map((word) => word.text).join('');
+// Prevent a big multi-word box from being added over an existing single-word match.
+if (group.some((word) => targetSet.has(word.normalizedText))) continue;
+
+const joinedNoSpace = group.map((word) => word.text).join('');
       const joinedSpace = group.map((word) => word.text).join(' ');
       const joinedDash = group.map((word) => word.text).join('-');
 

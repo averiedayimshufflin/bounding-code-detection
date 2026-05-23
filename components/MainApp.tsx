@@ -20,7 +20,7 @@ import { AlertCircle, Settings, X } from 'lucide-react';
 
 const DEFAULT_CONFIG: ProcessingConfig = {
   ocrEngine: 'tesseract',
-  renderScale: 2,
+  renderScale: 2.5,
   debugMode: false,
 };
 

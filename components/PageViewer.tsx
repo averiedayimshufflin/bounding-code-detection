@@ -237,8 +237,7 @@ export default function PageViewer({
               const w = det.bbox.x1 - det.bbox.x0;
               const h = det.bbox.y1 - det.bbox.y0;
 
-              const pad = Math.max(4, h * 0.3);
-
+const pad = Math.max(6, h * 0.4);
               return (
                 <g
                   key={det.id}
@@ -254,7 +253,7 @@ export default function PageViewer({
                     height={h + pad * 2}
                     fill={isActive ? `${colour}30` : `${colour}12`}
                     stroke={colour}
-                    strokeWidth={isActive ? 3 : 2}
+                    strokeWidth={isActive ? 4 : 3}
                     rx={4}
                   />
                 </g>

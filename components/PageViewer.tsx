@@ -27,6 +27,11 @@ const [zoom, setZoom] = useState(1.25);
   const page = pages.find((p) => p.pageNumber === currentPage);
   const totalPages = pages.length;
 
+  const totalDetections = pages.reduce(
+  (sum, p) => sum + p.detections.length,
+  0,
+);
+
   if (!page) return null;
 
   const prev = () => onPageChange(Math.max(1, currentPage - 1));
@@ -102,9 +107,9 @@ className="p-1.5 text-gray-400 hover:text-white hover:bg-gray-800 disabled:opaci
 
           {/* Detection count badge */}
           <span className="px-2.5 py-1 rounded-full bg-red-500/15 text-red-400 font-mono border border-red-500/20">
-            {page.detections.length} detection
-            {page.detections.length !== 1 ? 's' : ''}
-          </span>
+  {totalDetections} detection
+  {totalDetections !== 1 ? 's' : ''}
+</span>
 
           {debugMode && (
             <span className="flex items-center gap-1 px-2.5 py-1 rounded-full bg-yellow-500/15 text-yellow-400 font-mono border border-yellow-500/20">

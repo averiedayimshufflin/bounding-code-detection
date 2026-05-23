@@ -14,7 +14,6 @@ import DetectionSidebar from './DetectionSidebar';
 import { loadPDF, renderPage } from '@/lib/pdfProcessor';
 import {
   runTesseractOCR,
-  runOCRSpaceAPI,
   terminateTesseract,
 } from '@/lib/ocrProcessor';
 import { AlertCircle, Settings, X } from 'lucide-react';
@@ -92,35 +91,11 @@ export default function MainApp() {
           const rendered = await renderPage(pdfDoc, i, config.renderScale);
 
           // 2. OCR
-let ocrResult: Awaited<ReturnType<typeof runTesseractOCR>>;
-
-if (config.ocrEngine === 'ocrspace') {
-  ocrResult = await runOCRSpaceAPI(
-    rendered.dataUrl,
-    i,
-    targetCodes,
-  );
-
-  // Prioritize detection: OCR.space is faster, but if it misses,
-  // retry only that page with Tesseract.
-  if (ocrResult.detections.length === 0) {
-    console.warn(
-      `[OCR] OCR.space found 0 detections on page ${i}. Falling back to Tesseract.`,
-    );
-
-    ocrResult = await runTesseractOCR(
-      rendered.dataUrl,
-      i,
-      targetCodes,
-    );
-  }
-} else {
-  ocrResult = await runTesseractOCR(
-    rendered.dataUrl,
-    i,
-    targetCodes,
-  );
-}
+const ocrResult = await runTesseractOCR(
+  rendered.dataUrl,
+  i,
+  targetCodes,
+);
           const pageResult: PageResult = {
             pageNumber: i,
             imageDataUrl: rendered.dataUrl,

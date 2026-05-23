@@ -20,7 +20,7 @@ import {
 import { AlertCircle, Settings, X } from 'lucide-react';
 
 const DEFAULT_CONFIG: ProcessingConfig = {
-  ocrEngine: 'tesseract',
+  ocrEngine: 'ocrspace',
   renderScale: 3,
   debugMode: false,
 };
@@ -249,13 +249,8 @@ export default function MainApp() {
           onPageChange={setViewerPage}
           selectedDetectionId={selectedDetectionId}
           onDetectionClick={handleDetectionClick}
-          debugMode={config.debugMode}
-          onDebugToggle={() =>
-            setConfig((current) => ({
-              ...current,
-              debugMode: !current.debugMode,
-            }))
-          }
+          debugMode={false}
+          onDebugToggle={() => {}}
           pdfName={pdfName}
           onReset={handleReset}
         />

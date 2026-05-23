@@ -1,3 +1,4 @@
+
 import { createWorker, PSM } from 'tesseract.js';
 
 type BBox = {
@@ -359,13 +360,38 @@ function parseOCRSpaceWords(payload: any, pageNumber: number): OCRWord[] {
 
   return words;
 }
+async function shrinkImageDataUrl(
+  imageDataUrl: string,
+  maxWidth = 1800,
+  quality = 0.75,
+): Promise<string> {
+  const image = new Image();
+  image.src = imageDataUrl;
 
+  await new Promise<void>((resolve, reject) => {
+    image.onload = () => resolve();
+    image.onerror = () => reject(new Error('Failed to load image for OCR resize'));
+  });
+
+  const scale = Math.min(1, maxWidth / image.width);
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(image.width * scale);
+  canvas.height = Math.round(image.height * scale);
+
+  const ctx = canvas.getContext('2d');
+  if (!ctx) throw new Error('Could not create OCR resize canvas');
+
+  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+  return canvas.toDataURL('image/jpeg', quality);
+}
 export async function runOCRSpaceAPI(
   imageDataUrl: string,
   pageNumber: number,
   targetCodes: string[] = [],
 ): Promise<OCRResult> {
-  const base64Image = imageDataUrl.replace(/^data:image\/\w+;base64,/, '');
+  const resizedImageDataUrl = await shrinkImageDataUrl(imageDataUrl);
+  const base64Image = resizedImageDataUrl.replace(/^data:image\/\w+;base64,/, '');
 
   const response = await fetch('/api/ocr', {
     method: 'POST',

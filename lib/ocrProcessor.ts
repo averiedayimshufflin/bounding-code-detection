@@ -365,14 +365,15 @@ export async function runOCRSpaceAPI(
   pageNumber: number,
   targetCodes: string[] = [],
 ): Promise<OCRResult> {
+  const base64Image = imageDataUrl.replace(/^data:image\/\w+;base64,/, '');
+
   const response = await fetch('/api/ocr', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      image: imageDataUrl,
-      imageDataUrl,
+      base64Image,
       pageNumber,
     }),
   });

@@ -30,7 +30,7 @@ function parseTargetCodes(input: string): string[] {
     new Set(
       input
         .split(/[,\n\r\t ]+/)
-        .map((code) => code.trim().toUpperCase())
+        .map((code) => code.trim())
         .filter(Boolean),
     ),
   );

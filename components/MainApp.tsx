@@ -360,38 +360,6 @@ function SettingsPanel({
           Higher = better OCR, slower & more memory
         </p>
       </label>
-
-      {/* Debug mode */}
-      <label className="flex items-center justify-between cursor-pointer">
-        <div>
-          <span className="text-xs text-gray-400 font-medium">Debug mode</span>
-          <p className="text-[11px] text-gray-700 mt-0.5">
-            Show all OCR words as yellow outlines
-          </p>
-        </div>
-
-        <button
-          type="button"
-          onClick={() =>
-            onChange({
-              ...config,
-              debugMode: !config.debugMode,
-            })
-          }
-          className={`
-            relative w-9 h-5 rounded-full transition-colors cursor-pointer
-            ${config.debugMode ? 'bg-yellow-500' : 'bg-gray-700'}
-          `}
-          aria-label="Toggle debug mode"
-        >
-          <span
-            className={`
-              absolute top-0.5 w-4 h-4 rounded-full bg-white transition-transform
-              ${config.debugMode ? 'translate-x-4' : 'translate-x-0.5'}
-            `}
-          />
-        </button>
-      </label>
     </div>
   );
 }
